@@ -1,0 +1,16 @@
+redis:
+  image: redis
+  container_name: dumplink_redis
+  restart: always
+
+dumplink:
+  build: ./dumplink
+  container_name: dumplink_web
+  volumes:
+    - ./dumplink:/opt/dumplink
+  command: /bin/sh -c "python3 /opt/dumplink/manage.py runserver 0.0.0.0:8008"
+  links:
+    - redis
+  ports:
+    - "0.0.0.0:8008:8008"
+  restart: always
